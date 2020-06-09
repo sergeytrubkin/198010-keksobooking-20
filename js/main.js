@@ -66,34 +66,31 @@ var getRandomElements = function (array) {
 
 var createUserData = function (number) {
   var timeCheck = getRandomElement(TimeCheck);
-  var userData = [];
+  var userData = {
 
-  var author = {
-    avatar: generateUrl(number)
+    author: {
+      avatar: generateUrl(number)
+    },
+
+    location: {
+      x: getRandomBetween(MIN_LOCATION_X, getWidthElement(MAP)),
+      y: getRandomBetween(MIN_LOCATION_Y, MAX_LOCATION_Y),
+    },
+
+    offer: {
+      title: 'заголовок предложения',
+      address: location.x + ', ' + location.y,
+      price: getRandomBetween(MIN_PRICE, MAX_PRICE),
+      type: getRandomElement(Types),
+      rooms: getRandomBetween(MIN_COUNT_ROOM, MAX_COUNT_ROOM),
+      guests: getRandomBetween(MIN_COUNT_GUEST, MAX_COUTN_GUEST),
+      checkin: timeCheck,
+      checkout: timeCheck,
+      features: getRandomElements(Features),
+      description: 'строка с описанием',
+      photos: getRandomElements(Photos),
+    }
   };
-
-  var location = {
-    x: getRandomBetween(MIN_LOCATION_X, getWidthElement(MAP)),
-    y: getRandomBetween(MIN_LOCATION_Y, MAX_LOCATION_Y),
-  };
-
-  var offer = {
-    title: 'заголовок предложения',
-    address: location.x + ', ' + location.y,
-    price: getRandomBetween(MIN_PRICE, MAX_PRICE),
-    type: getRandomElement(Types),
-    rooms: getRandomBetween(MIN_COUNT_ROOM, MAX_COUNT_ROOM),
-    guests: getRandomBetween(MIN_COUNT_GUEST, MAX_COUTN_GUEST),
-    checkin: timeCheck,
-    checkout: timeCheck,
-    features: getRandomElements(Features),
-    description: 'строка с описанием',
-    photos: getRandomElements(Photos),
-  };
-
-  userData.author = author;
-  userData.offer = offer;
-  userData.location = location;
 
   return userData;
 };
