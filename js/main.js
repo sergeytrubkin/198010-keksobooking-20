@@ -54,9 +54,7 @@ var getRandomBetween = function (min, max) {
 };
 
 var getRandomElement = function (array) {
-  var index = Math.floor(Math.random() * (array.length));
-
-  return array[index];
+  return array[getRandomBetween(0, array.length - 1)];
 };
 
 var getRandomElements = function (array) {
