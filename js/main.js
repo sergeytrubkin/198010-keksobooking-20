@@ -10,20 +10,24 @@ var Nodes = {
     .content
     .querySelector('.map__card'),
 };
-
-var OFFSET_MAP_PIN_X = 25;
-var OFFSET_MAP_PIN_Y = 70;
-var MIN_LOCATION_X = 0;
-var MIN_LOCATION_Y = 150;
-var MAX_LOCATION_Y = 650;
-var USER_COUNT = 8;
-var MIN_COUNT_ROOM = 1;
-var MAX_COUNT_ROOM = 100;
-var MIN_COUNT_GUEST = 1;
-var MAX_COUTN_GUEST = 3;
-var MIN_PRICE = 0;
-var MAX_PRICE = 15000;
-
+var Offset = {
+  MAP_PIN_X: 25,
+  MAP_PIN_Y: 70,
+};
+var PinLocation = {
+  MIN_X: 0,
+  MIN_Y: 150,
+  MAX_Y: 650,
+};
+var Price = {
+  MIN: 0,
+  MAX: 15000,
+};
+var Guest = {
+  MIN: 1,
+  MAX: 10,
+};
+var ROOMS = [1, 2, 3, 100];
 var Types = {
   'palace': 'Дворец',
   'flat': 'Квартиа',
@@ -44,20 +48,14 @@ var Photos = [
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
 ];
-
+var USER_COUNT = 8;
 
 var getWidthElement = function (element) {
   return element.offsetWidth;
 };
 
-var generateUrl = function (number) {
-  var urlImg = '';
-  var startUrl = 'img/avatars/user';
-  var endUrl = number + '.png';
-  var endUrlWithZero = endUrl.padStart(6, 0);
-
-  urlImg = startUrl + endUrlWithZero;
-  return urlImg;
+var createImageName = function (number) {
+  return 'img/avatars/user' + ('' + (number + 1)).padStart(2, 0) + '.png';
 };
 
 var getRandomBetween = function (min, max) {
@@ -76,11 +74,11 @@ var getRandomElements = function (array) {
 };
 
 var createUserData = function (number) {
-  var locationX = getRandomBetween(MIN_LOCATION_X, getWidthElement(Nodes.MAP));
-  var locationY = getRandomBetween(MIN_LOCATION_Y, MAX_LOCATION_Y);
+  var locationX = getRandomBetween(PinLocation.MIN_X, getWidthElement(Nodes.MAP));
+  var locationY = getRandomBetween(PinLocation.MIN_Y, PinLocation.MAX_Y);
   var userData = {
     author: {
-      avatar: generateUrl(number)
+      avatar: createImageName(number)
     },
 
     location: {
@@ -91,10 +89,10 @@ var createUserData = function (number) {
     offer: {
       title: 'заголовок предложения',
       address: locationX + ', ' + locationY,
-      price: getRandomBetween(MIN_PRICE, MAX_PRICE),
+      price: getRandomBetween(Price.MIN, Price.MAX),
       type: getRandomElement(Object.keys(Types)),
-      rooms: getRandomBetween(MIN_COUNT_ROOM, MAX_COUNT_ROOM),
-      guests: getRandomBetween(MIN_COUNT_GUEST, MAX_COUTN_GUEST),
+      rooms: getRandomElement(ROOMS),
+      guests: getRandomBetween(Guest.MIN, Guest.MAX),
       checkin: getRandomElement(TimeCheck),
       checkout: getRandomElement(TimeCheck),
       features: getRandomElements(Features),
@@ -132,8 +130,8 @@ var activationMap = function (active) {
 var createPin = function (user) {
   var pin = Nodes.MAP_PIN_TEMPLATE.cloneNode(true);
 
-  pin.style.left = (user.location.x - OFFSET_MAP_PIN_X) + 'px';
-  pin.style.top = (user.location.y - OFFSET_MAP_PIN_Y) + 'px';
+  pin.style.left = (user.location.x - Offset.MAP_PIN_X) + 'px';
+  pin.style.top = (user.location.y - Offset.MAP_PIN_Y) + 'px';
 
   var pinImage = pin.querySelector('img');
   pinImage.src = user.author.avatar;
