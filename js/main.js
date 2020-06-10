@@ -13,10 +13,10 @@ var Nodes = {
 
 var OFFSET_MAP_PIN_X = 25;
 var OFFSET_MAP_PIN_Y = 70;
-var USER_COUNT = 8;
 var MIN_LOCATION_X = 0;
 var MIN_LOCATION_Y = 150;
 var MAX_LOCATION_Y = 650;
+var USER_COUNT = 8;
 var MIN_COUNT_ROOM = 1;
 var MAX_COUNT_ROOM = 100;
 var MIN_COUNT_GUEST = 1;
@@ -24,7 +24,12 @@ var MAX_COUTN_GUEST = 3;
 var MIN_PRICE = 0;
 var MAX_PRICE = 15000;
 
-var Types = ['palace', 'flat', 'house', 'bungalo'];
+var Types = {
+  'palace': 'Дворец',
+  'flat': 'Квартиа',
+  'house': 'Дом',
+  'bungalo': 'Бунгало',
+};
 var TimeCheck = ['12:00', '13:00', '14:00'];
 var Features = [
   'wifi',
@@ -87,7 +92,7 @@ var createUserData = function (number) {
       title: 'заголовок предложения',
       address: locationX + ', ' + locationY,
       price: getRandomBetween(MIN_PRICE, MAX_PRICE),
-      type: getRandomElement(Types),
+      type: getRandomElement(Object.keys(Types)),
       rooms: getRandomBetween(MIN_COUNT_ROOM, MAX_COUNT_ROOM),
       guests: getRandomBetween(MIN_COUNT_GUEST, MAX_COUTN_GUEST),
       checkin: getRandomElement(TimeCheck),
@@ -171,22 +176,7 @@ var createCard = function (user) {
 
   var cardType = card.querySelector('.popup__type');
   if (user.offer.hasOwnProperty('type')) {
-    var type = '';
-    switch (user.offer.type) {
-      case 'palace':
-        type = 'Дворец';
-        break;
-      case 'flat':
-        type = 'Квартира';
-        break;
-      case 'house':
-        type = 'Дом';
-        break;
-      case 'bungalo':
-        type = 'Бунгало';
-        break;
-    }
-    cardType.textContent = type;
+    cardType.textContent = Types[user.offer.type];
   } else {
     cardType.remove();
   }
