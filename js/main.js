@@ -1,10 +1,16 @@
 'use strict';
 
-var MAP_PIN_TEMPLATE = document.querySelector('#pin')
-  .content
-  .querySelector('.map__pin');
-var MAP = document.querySelector('.map');
-var MAP_PINS_BLOCK = MAP.querySelector('.map__pins');
+var Nodes = {
+  MAP: document.querySelector('.map'),
+  MAP_PINS_BLOCK: document.querySelector('.map__pins'),
+  MAP_PIN_TEMPLATE: document.querySelector('#pin')
+    .content
+    .querySelector('.map__pin'),
+  CARD_TEMPLATE: document.querySelector('#card')
+    .content
+    .querySelector('.map__card'),
+};
+
 var OFFSET_MAP_PIN_X = 25;
 var OFFSET_MAP_PIN_Y = 70;
 var USER_COUNT = 8;
@@ -65,27 +71,27 @@ var getRandomElements = function (array) {
 };
 
 var createUserData = function (number) {
-  var timeCheck = getRandomElement(TimeCheck);
+  var locationX = getRandomBetween(MIN_LOCATION_X, getWidthElement(Nodes.MAP));
+  var locationY = getRandomBetween(MIN_LOCATION_Y, MAX_LOCATION_Y);
   var userData = {
-
     author: {
       avatar: generateUrl(number)
     },
 
     location: {
-      x: getRandomBetween(MIN_LOCATION_X, getWidthElement(MAP)),
-      y: getRandomBetween(MIN_LOCATION_Y, MAX_LOCATION_Y),
+      x: locationX,
+      y: locationY,
     },
 
     offer: {
       title: 'заголовок предложения',
-      address: location.x + ', ' + location.y,
+      address: locationX + ', ' + locationY,
       price: getRandomBetween(MIN_PRICE, MAX_PRICE),
       type: getRandomElement(Types),
       rooms: getRandomBetween(MIN_COUNT_ROOM, MAX_COUNT_ROOM),
       guests: getRandomBetween(MIN_COUNT_GUEST, MAX_COUTN_GUEST),
-      checkin: timeCheck,
-      checkout: timeCheck,
+      checkin: getRandomElement(TimeCheck),
+      checkout: getRandomElement(TimeCheck),
       features: getRandomElements(Features),
       description: 'строка с описанием',
       photos: getRandomElements(Photos),
@@ -110,16 +116,17 @@ var createUsers = function () {
 var activationMap = function (active) {
   var fadedClass = 'map--faded';
 
-  if (active || MAP.classList.contains(fadedClass)) {
-    MAP.classList.remove(fadedClass);
+  if (active || Nodes.MAP.classList.contains(fadedClass)) {
+    Nodes.MAP.classList.remove(fadedClass);
   } else {
-    MAP.classList.add(fadedClass);
+    Nodes.MAP.classList.add(fadedClass);
   }
 };
 
 // функция создания шаблона метки на карте
 var createPin = function (user) {
-  var pin = MAP_PIN_TEMPLATE.cloneNode(true);
+  var pin = Nodes.MAP_PIN_TEMPLATE.cloneNode(true);
+
   pin.style.left = (user.location.x - OFFSET_MAP_PIN_X) + 'px';
   pin.style.top = (user.location.y - OFFSET_MAP_PIN_Y) + 'px';
 
@@ -130,14 +137,112 @@ var createPin = function (user) {
   return pin;
 };
 
-// создание фрагметна с метками
-var createPins = function () {
-  var fragment = document.createDocumentFragment();
-  var users = createUsers();
+// функция создания карточки
+var createCard = function (user) {
+  var card = Nodes.CARD_TEMPLATE.cloneNode(true);
 
-  users.forEach(function (user) {
-    var newPinElement = createPin(user);
-    fragment.appendChild(newPinElement);
+  var cardAvatar = card.querySelector('.popup__avatar');
+  if (user.author.hasOwnProperty('avatar')) {
+    cardAvatar.src = user.author.avatar;
+  } else {
+    cardAvatar.remove();
+  }
+
+  var cardTitle = card.querySelector('.popup__title');
+  if (user.offer.hasOwnProperty('title')) {
+    cardTitle.textContent = user.offer.title;
+  } else {
+    cardTitle.remove();
+  }
+
+  var cardAddress = card.querySelector('.popup__text--address');
+  if (user.offer.hasOwnProperty('address')) {
+    cardAddress.textContent = user.offer.address;
+  } else {
+    cardAddress.remove();
+  }
+
+  var cardPrice = card.querySelector('.popup__text--price');
+  if (user.offer.hasOwnProperty('price')) {
+    cardPrice.textContent = user.offer.price + '₽/ночь';
+  } else {
+    cardPrice.remove();
+  }
+
+  var cardType = card.querySelector('.popup__type');
+  if (user.offer.hasOwnProperty('type')) {
+    var type = '';
+    switch (user.offer.type) {
+      case 'palace':
+        type = 'Дворец';
+        break;
+      case 'flat':
+        type = 'Квартира';
+        break;
+      case 'house':
+        type = 'Дом';
+        break;
+      case 'bungalo':
+        type = 'Бунгало';
+        break;
+    }
+    cardType.textContent = type;
+  } else {
+    cardType.remove();
+  }
+
+  var cardCapacity = card.querySelector('.popup__text--capacity');
+  if (user.offer.hasOwnProperty('rooms') && user.offer.hasOwnProperty('guests')) {
+    cardCapacity.textContent = user.offer.rooms + ' комнаты для ' + user.offer.guests + ' гостей';
+  } else {
+    cardCapacity.remove();
+  }
+
+  var cardTime = card.querySelector('.popup__text--time');
+  if (user.offer.hasOwnProperty('checkin') && user.offer.hasOwnProperty('checkout')) {
+    cardTime.textContent = 'Заезд после ' + user.offer.checkin + ', выезд до ' + user.offer.checkout;
+  } else {
+    cardTime.remove();
+  }
+
+  var cardFeaturesList = card.querySelector('.popup__features');
+  if (user.offer.hasOwnProperty('features')) {
+    cardFeaturesList.textContent = user.offer.features;
+  } else {
+    cardFeaturesList.remove();
+  }
+
+  var cardDescription = card.querySelector('.popup__description');
+  if (user.offer.hasOwnProperty('description')) {
+    cardDescription.textContent = user.offer.description;
+  } else {
+    cardDescription.remove();
+  }
+
+  var cardPhoto = card.querySelector('.popup__photos');
+  if (user.offer.hasOwnProperty('photos')) {
+    var cardPhotoImg = cardPhoto.querySelector('.popup__photo');
+    cardPhotoImg.remove();
+
+    user.offer.photos.forEach(function (photo) {
+      var newPhoto = cardPhotoImg.cloneNode(true);
+      newPhoto.src = photo;
+      cardPhoto.appendChild(newPhoto);
+    });
+  } else {
+    cardPhoto.remove();
+  }
+
+  return card;
+};
+
+// создание фрагмента
+var createElements = function (data, element) {
+  var fragment = document.createDocumentFragment();
+  data.forEach(function (user) {
+    var newElement = element(user);
+
+    fragment.appendChild(newElement);
   });
 
   return fragment;
@@ -145,8 +250,12 @@ var createPins = function () {
 
 // отрисовка меток на карте и активация карты
 var renderPins = function () {
-  var pins = createPins();
-  MAP_PINS_BLOCK.appendChild(pins);
+  var users = createUsers();
+  var pins = createElements(users, createPin);
+  var cards = createElements(users, createCard);
+  Nodes.MAP_PINS_BLOCK.appendChild(pins);
+  Nodes.MAP_PINS_BLOCK.insertAdjacentElement('afterend', cards.children[2]);
+
   activationMap(true);
 };
 
