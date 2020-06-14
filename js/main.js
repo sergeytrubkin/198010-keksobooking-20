@@ -11,6 +11,8 @@ var Nodes = {
   FIELD_PRICE: document.querySelector('#price'),
   FIELD_CAPACITY: document.querySelector('#capacity'),
   FIELD_ROOM: document.querySelector('#room_number'),
+  FIELD_TIMEOUT: document.querySelector('#timeout'),
+  FIELD_TIMEIN: document.querySelector('#timein'),
   MAP_PIN_TEMPLATE: document.querySelector('#pin')
     .content
     .querySelector('.map__pin'),
@@ -360,6 +362,18 @@ var validationRoomsAndCapacity = function () {
   Nodes.FIELD_CAPACITY.setCustomValidity(message);
 };
 
+// функция установки даты въезда/выезда
+var changeTimeCheck = function (evt) {
+  var timein = Nodes.FIELD_TIMEIN.value;
+  var timeout = Nodes.FIELD_TIMEOUT.value;
+
+  if (evt.target === Nodes.FIELD_TIMEIN) {
+    Nodes.FIELD_TIMEOUT.value = timein;
+  } else if (evt.target === Nodes.FIELD_TIMEOUT) {
+    Nodes.FIELD_TIMEIN.value = timeout;
+  }
+};
+
 Nodes.MAP_PIN_MAIN.addEventListener('mousedown', function (evt) {
   if (evt.button === MOUSE_BUTTON_LEFT) {
     setAddressPin('move');
@@ -377,6 +391,8 @@ Nodes.MAP_PIN_MAIN.addEventListener('keydown', function (evt) {
 Nodes.FORM.addEventListener('change', function (evt) {
   if (evt.target === Nodes.FIELD_TYPE) {
     changeMinPrice(evt.target.value);
+  } else if (evt.target === Nodes.FIELD_TIMEIN || evt.target === Nodes.FIELD_TIMEOUT) {
+    changeTimeCheck(evt);
   }
 });
 
