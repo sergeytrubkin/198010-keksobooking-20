@@ -7,6 +7,10 @@ var Nodes = {
   MAP_PIN_MAIN: document.querySelector('.map__pin--main'),
   FORM: document.querySelector('.ad-form'),
   FIELD_ADDRESS: document.querySelector('#address'),
+  FIELD_TYPE: document.querySelector('#type'),
+  FIELD_PRICE: document.querySelector('#price'),
+  FIELD_CAPACITY: document.querySelector('#capacity'),
+  FIELD_ROOM: document.querySelector('#room_number'),
   MAP_PIN_TEMPLATE: document.querySelector('#pin')
     .content
     .querySelector('.map__pin'),
@@ -28,16 +32,26 @@ var Price = {
   MIN: 0,
   MAX: 15000,
 };
-var Guest = {
-  MIN: 1,
-  MAX: 10,
+var Capacity = {
+  MIN: 0,
+  MAX: 3,
 };
-var ROOMS = [1, 2, 3, 100];
+var Rooms = {
+  MIN: 1,
+  MAX: 3,
+  NOT_GUEST: 100,
+};
 var Types = {
   'palace': 'Дворец',
   'flat': 'Квартиа',
   'house': 'Дом',
   'bungalo': 'Бунгало',
+};
+var MinPriceForNight = {
+  'bungalo': 0,
+  'flat': 1000,
+  'house': 5000,
+  'palace': 10000,
 };
 var TimeCheck = ['12:00', '13:00', '14:00'];
 var Features = [
@@ -114,8 +128,8 @@ var generateUserData = function (number) {
       address: locationX + ', ' + locationY,
       price: getRandomBetween(Price.MIN, Price.MAX),
       type: getRandomElement(Object.keys(Types)),
-      rooms: getRandomElement(ROOMS),
-      guests: getRandomBetween(Guest.MIN, Guest.MAX),
+      rooms: getRandomElement(Object.values(Rooms)),
+      guests: getRandomBetween(Capacity.MIN, Capacity.MAX),
       checkin: getRandomElement(TimeCheck),
       checkout: getRandomElement(TimeCheck),
       features: getRandomElements(Features),
@@ -126,7 +140,6 @@ var generateUserData = function (number) {
 
   return userData;
 };
-
 var createUsers = function () {
   var users = [];
 
@@ -321,9 +334,31 @@ var setAddressPin = function (stat) {
   Nodes.FIELD_ADDRESS.value = address;
 };
 
-setAddressPin('preload');
+// функция определения минимальной стоимости в зависимости от типа жилья
+var changeMinPrice = function (type) {
+  var pricePerNight = MinPriceForNight[type];
+  Nodes.FIELD_PRICE.min = pricePerNight;
+  Nodes.FIELD_PRICE.placeholder = pricePerNight;
+};
 
-activationForm(false);
+// функция валидация полей количества комнат и гостей
+var validationRoomsAndCapacity = function () {
+  var roomNumber = parseInt(Nodes.FIELD_ROOM.value, 10);
+  var capacityNumber = parseInt(Nodes.FIELD_CAPACITY.value, 10);
+  var message = '';
+
+  if (capacityNumber > roomNumber && capacityNumber > 0) {
+    message = 'количество мест должно быть меньше либо равно количеству комнат';
+  } else if (roomNumber === Rooms.NOT_GUEST && capacityNumber > Capacity.MIN) {
+    message = 'такое количество комнат наверное не для гостей';
+  } else if (capacityNumber === Capacity.MIN && roomNumber < Rooms.NOT_GUEST) {
+    message = 'Для данного количества комнат необходимо выбрать количество мест';
+  } else {
+    message = '';
+  }
+
+  Nodes.FIELD_CAPACITY.setCustomValidity(message);
+};
 
 Nodes.MAP_PIN_MAIN.addEventListener('mousedown', function (evt) {
   if (evt.button === MOUSE_BUTTON_LEFT) {
@@ -339,4 +374,20 @@ Nodes.MAP_PIN_MAIN.addEventListener('keydown', function (evt) {
   }
 });
 
+Nodes.FORM.addEventListener('change', function (evt) {
+  if (evt.target === Nodes.FIELD_TYPE) {
+    changeMinPrice(evt.target.value);
+  }
+});
 
+Nodes.FIELD_CAPACITY.addEventListener('input', function () {
+  validationRoomsAndCapacity();
+});
+
+Nodes.FIELD_ROOM.addEventListener('input', function () {
+  validationRoomsAndCapacity();
+});
+
+changeMinPrice(Nodes.FIELD_TYPE.value);
+setAddressPin('preload');
+activationForm(false);
