@@ -4,8 +4,9 @@ var Nodes = {
   MAP: document.querySelector('.map'),
   MAP_PINS_BLOCK: document.querySelector('.map__pins'),
   MAP_FILTERS: document.querySelector('.map__filters'),
-  MAIN_PIN: document.querySelector('.map__pin--main'),
+  MAP_PIN_MAIN: document.querySelector('.map__pin--main'),
   FORM: document.querySelector('.ad-form'),
+  FIELD_ADDRESS: document.querySelector('#address'),
   MAP_PIN_TEMPLATE: document.querySelector('#pin')
     .content
     .querySelector('.map__pin'),
@@ -16,11 +17,12 @@ var Nodes = {
 var Offset = {
   MAP_PIN_X: 25,
   MAP_PIN_Y: 70,
+  MAIN_PIN_Y: 84,
 };
 var PinLocation = {
   MIN_X: 0,
-  MIN_Y: 150,
-  MAX_Y: 650,
+  MIN_Y: 130,
+  MAX_Y: 630,
 };
 var Price = {
   MIN: 0,
@@ -256,7 +258,7 @@ var renderPins = function () {
   // Nodes.MAP_PINS_BLOCK.insertAdjacentElement('afterend', cards.children[2]);
 };
 
-// функция активации полей форм
+// функция активации полей форм *true/false*
 var activationForm = function (stat) {
   var fieldFilter = Nodes.MAP_FILTERS.children;
   var fieldForm = Nodes.FORM.children;
@@ -272,7 +274,7 @@ var activationForm = function (stat) {
   activationElements(fieldForm, stat);
 };
 
-// функция активация/деактивация карты. true - активация, false - деактивация
+// функция активация/деактивация карты. *true/false*
 var activationMap = function (stat) {
   var fadedClass = 'map--faded';
 
@@ -288,16 +290,51 @@ var activationMap = function (stat) {
   activationForm(stat);
 };
 
+// функция получения адреса метки *'preload'/'move'*
+var getLocationPin = function (stat) {
+  var location = '';
+  var pin = Nodes.MAP_PIN_MAIN;
+  var pinOffsetX = parseInt(pin.style.left, 10);
+  var pinOffsetY = parseInt(pin.style.top, 10);
+  var pinWidth = pin.offsetWidth;
+  var pinHeight = pin.offsetHeight;
+
+  switch (stat) {
+    case 'preload':
+      var pinLocationX = pinOffsetX + pinWidth / 2;
+      var pinLocationY = pinOffsetY + pinHeight / 2;
+      break;
+    case 'move':
+      pinLocationX = pinOffsetX + pinWidth / 2;
+      pinLocationY = pinOffsetY + Offset.MAIN_PIN_Y;
+      break;
+  }
+
+  location = '' + Math.floor(pinLocationX) + ' , ' + Math.floor(pinLocationY);
+
+  return location;
+};
+
+// функция подстановки адреса метки в поле формы *'preload'/'move'*
+var setAddressPin = function (stat) {
+  var address = getLocationPin(stat);
+  Nodes.FIELD_ADDRESS.value = address;
+};
+
+setAddressPin('preload');
+
 activationForm(false);
 
-Nodes.MAIN_PIN.addEventListener('mousedown', function (evt) {
+Nodes.MAP_PIN_MAIN.addEventListener('mousedown', function (evt) {
   if (evt.button === MOUSE_BUTTON_LEFT) {
+    setAddressPin('move');
     activationMap(true);
   }
 });
 
-Nodes.MAIN_PIN.addEventListener('keydown', function (evt) {
+Nodes.MAP_PIN_MAIN.addEventListener('keydown', function (evt) {
   if (evt.keyCode === KEY_CODE_ENTER) {
+    setAddressPin('move');
     activationMap(true);
   }
 });
