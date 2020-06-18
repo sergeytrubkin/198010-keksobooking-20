@@ -20,6 +20,9 @@ var Nodes = {
     .content
     .querySelector('.map__card'),
 };
+var KeyCode = {
+  ESC: 27,
+};
 var Offset = {
   MAP_PIN_X: 25,
   MAP_PIN_Y: 70,
@@ -153,7 +156,7 @@ var createUsers = function () {
   return users;
 };
 
-// функция создания шаблона метки на карте
+// создание шаблона метки
 var createPinTemplate = function (user) {
   var pin = Nodes.MAP_PIN_TEMPLATE.cloneNode(true);
 
@@ -167,9 +170,17 @@ var createPinTemplate = function (user) {
   return pin;
 };
 
-// функция создания карточки
+// создание шаблона карточки
 var createCardTemplate = function (user) {
   var card = Nodes.CARD_TEMPLATE.cloneNode(true);
+
+  var fillOfferCard = function (element, hasContent, content) {
+    if (user.offer.hasOwnProperty(hasContent)) {
+      element.textContent = content;
+    } else {
+      element.remove();
+    }
+  };
 
   var cardAvatar = card.querySelector('.popup__avatar');
   if (user.author.hasOwnProperty('avatar')) {
@@ -179,60 +190,28 @@ var createCardTemplate = function (user) {
   }
 
   var cardTitle = card.querySelector('.popup__title');
-  if (user.offer.hasOwnProperty('title')) {
-    cardTitle.textContent = user.offer.title;
-  } else {
-    cardTitle.remove();
-  }
+  fillOfferCard(cardTitle, 'title', user.offer.title);
 
   var cardAddress = card.querySelector('.popup__text--address');
-  if (user.offer.hasOwnProperty('address')) {
-    cardAddress.textContent = user.offer.address;
-  } else {
-    cardAddress.remove();
-  }
+  fillOfferCard(cardAddress, 'address', user.offer.address);
 
   var cardPrice = card.querySelector('.popup__text--price');
-  if (user.offer.hasOwnProperty('price')) {
-    cardPrice.textContent = user.offer.price + '₽/ночь';
-  } else {
-    cardPrice.remove();
-  }
+  fillOfferCard(cardPrice, 'price', (user.offer.price + '₽/ночь'));
 
   var cardType = card.querySelector('.popup__type');
-  if (user.offer.hasOwnProperty('type')) {
-    cardType.textContent = Types[user.offer.type];
-  } else {
-    cardType.remove();
-  }
+  fillOfferCard(cardType, 'type', Types[user.offer.type]);
 
   var cardCapacity = card.querySelector('.popup__text--capacity');
-  if (user.offer.hasOwnProperty('rooms') && user.offer.hasOwnProperty('guests')) {
-    cardCapacity.textContent = user.offer.rooms + ' комнаты для ' + user.offer.guests + ' гостей';
-  } else {
-    cardCapacity.remove();
-  }
+  fillOfferCard(cardCapacity, 'rooms' && 'guests', (user.offer.rooms + ' комнаты для ' + user.offer.guests + ' гостей'));
 
   var cardTime = card.querySelector('.popup__text--time');
-  if (user.offer.hasOwnProperty('checkin') && user.offer.hasOwnProperty('checkout')) {
-    cardTime.textContent = 'Заезд после ' + user.offer.checkin + ', выезд до ' + user.offer.checkout;
-  } else {
-    cardTime.remove();
-  }
+  fillOfferCard(cardTime, 'checkin' && 'checkout', ('Заезд после ' + user.offer.checkin + ', выезд до ' + user.offer.checkout));
 
   var cardFeaturesList = card.querySelector('.popup__features');
-  if (user.offer.hasOwnProperty('features')) {
-    cardFeaturesList.textContent = user.offer.features;
-  } else {
-    cardFeaturesList.remove();
-  }
+  fillOfferCard(cardFeaturesList, 'features', user.offer.features);
 
   var cardDescription = card.querySelector('.popup__description');
-  if (user.offer.hasOwnProperty('description')) {
-    cardDescription.textContent = user.offer.description;
-  } else {
-    cardDescription.remove();
-  }
+  fillOfferCard(cardDescription, 'description', user.offer.description);
 
   var cardPhoto = card.querySelector('.popup__photos');
   if (user.offer.hasOwnProperty('photos')) {
@@ -251,7 +230,7 @@ var createCardTemplate = function (user) {
   return card;
 };
 
-// создание фрагмента
+// создание фрагмента с коллекцией элементов
 var createElements = function (data, template) {
   var fragment = document.createDocumentFragment();
 
@@ -264,14 +243,52 @@ var createElements = function (data, template) {
   return fragment;
 };
 
+// функция открытия карточки через слушателя на метке
+var openPopup = function (pin, card) {
+  pin.addEventListener('click', function () {
+    var cardPopup = document.querySelector('.map__card');
+
+    if (cardPopup && cardPopup !== card) {
+      cardPopup.remove();
+    } else if (cardPopup === card) {
+      return;
+    }
+
+    Nodes.MAP_PINS_BLOCK.insertAdjacentElement('afterend', card);
+    var popupCloseButton = card.querySelector('.popup__close');
+
+    document.addEventListener('keydown', popupEscPressHandler);
+    popupCloseButton.addEventListener('click', closePopup);
+  });
+};
+
+// закрытия карточки
+var closePopup = function () {
+  var cardPopup = document.querySelector('.map__card');
+
+  cardPopup.remove();
+  document.removeEventListener('keydown', popupEscPressHandler);
+};
+
+
+var popupEscPressHandler = function (evt) {
+  if (evt.keyCode === KeyCode.ESC) {
+    evt.preventDefault();
+    closePopup();
+  }
+};
+
 // отрисовка меток на карте
 var renderPins = function () {
   var users = createUsers();
   var pins = createElements(users, createPinTemplate);
   var cards = createElements(users, createCardTemplate);
 
+  for (var i = 0; i < users.length; i++) {
+    openPopup(pins.children[i], cards.children[i], i);
+  }
+
   Nodes.MAP_PINS_BLOCK.appendChild(pins);
-  Nodes.MAP_PINS_BLOCK.insertAdjacentElement('afterend', cards.children[2]);
 };
 
 // функция активации полей форм *true/false*
@@ -306,7 +323,7 @@ var activationMap = function (stat) {
   activationForm(stat);
 };
 
-// функция получения адреса метки *'preload'/'move'*
+// получение адреса метки *'preload'/'move'*
 var getLocationPin = function (stat) {
   var location = '';
   var pin = Nodes.MAP_PIN_MAIN;
@@ -337,14 +354,14 @@ var setAddressPin = function (stat) {
   Nodes.FIELD_ADDRESS.value = address;
 };
 
-// функция определения минимальной стоимости в зависимости от типа жилья
+// определение минимальной стоимости в зависимости от типа жилья
 var changeMinPrice = function (type) {
   var pricePerNight = MinPriceForNight[type];
   Nodes.FIELD_PRICE.min = pricePerNight;
   Nodes.FIELD_PRICE.placeholder = pricePerNight;
 };
 
-// функция валидация полей количества комнат и гостей
+// валидация полей количества комнат и гостей
 var checkCapacityHandler = function () {
   var roomNumber = parseInt(Nodes.FIELD_ROOM.value, 10);
   var capacityNumber = parseInt(Nodes.FIELD_CAPACITY.value, 10);
