@@ -49,6 +49,18 @@ window.utils = (function () {
     }
   };
 
+  var coordsBetween = function (coord, min, max) {
+    if (coord <= min) {
+      var correctCorrd = min;
+    } else if (coord >= max) {
+      correctCorrd = max;
+    } else {
+      correctCorrd = coord;
+    }
+
+    return correctCorrd;
+  };
+
   return {
     getWidthElement: getWidthElement,
     getRandomBetween: getRandomBetween,
@@ -56,5 +68,6 @@ window.utils = (function () {
     getRandomElements: getRandomElements,
     createElements: createElements,
     activationElements: activationElements,
+    coordsBetween: coordsBetween,
   };
 })();
