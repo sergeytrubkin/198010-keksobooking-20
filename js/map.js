@@ -1,8 +1,7 @@
 'use strict';
 
-window.map = (function () {
+(function () {
   var Nodes = window.const.Nodes;
-  var USER_COUNT = window.const.USER_COUNT;
   var KeyCode = window.const.KeyCode;
 
   // отрисовка меток на карте
@@ -11,15 +10,19 @@ window.map = (function () {
     var pinElements = document.querySelectorAll('.map__pin');
 
     if (!(pinElements.length > 1)) {
-      var users = window.data.createUsers(USER_COUNT);
-      var pins = window.utils.createElements(users, window.pin.createPinTemplate);
-      var cards = window.utils.createElements(users, window.card.createCardTemplate);
 
-      for (var i = 0; i < users.length; i++) {
-        window.card.openPopup(pins.children[i], cards.children[i], i);
-      }
+      window.load(function (users) {
+        var pins = window.utils.createElements(users, window.pin.createTemplate);
+        var cards = window.utils.createElements(users, window.card.createTemplate);
 
-      Nodes.MAP_PINS_BLOCK.appendChild(pins);
+        for (var i = 0; i < users.length; i++) {
+          window.card.openPopup(pins.children[i], cards.children[i], i);
+        }
+
+        Nodes.MAP_PINS_BLOCK.appendChild(pins);
+
+      }, function () {});
+
     } else {
       return;
     }
@@ -49,7 +52,7 @@ window.map = (function () {
     }
   };
 
-  return {
+  window.map = {
     renderPins: renderPins,
     activationMap: activationMap,
     clickMainPinHandler: clickMainPinHandler,
