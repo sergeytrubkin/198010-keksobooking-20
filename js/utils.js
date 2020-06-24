@@ -1,6 +1,6 @@
 'use strict';
 
-window.utils = (function () {
+(function () {
   var getWidthElement = function (element) {
     return element.offsetWidth;
   };
@@ -61,7 +61,7 @@ window.utils = (function () {
     return correctCorrd;
   };
 
-  return {
+  window.utils = {
     getWidthElement: getWidthElement,
     getRandomBetween: getRandomBetween,
     getRandomElement: getRandomElement,

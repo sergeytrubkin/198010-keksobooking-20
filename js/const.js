@@ -1,6 +1,6 @@
 'use strict';
 
-window.const = (function () {
+(function () {
   var Nodes = {
     MAP: document.querySelector('.map'),
     MAP_PINS_BLOCK: document.querySelector('.map__pins'),
@@ -66,9 +66,9 @@ window.const = (function () {
     'elevator',
     'conditioner',
   ];
-  var USER_COUNT = 8;
+  var PIN_COUNT = 8;
 
-  return {
+  window.const = {
     Nodes: Nodes,
     KeyCode: KeyCode,
     Offset: Offset,
@@ -79,6 +79,6 @@ window.const = (function () {
     MinPriceForNight: MinPriceForNight,
     TimeCheck: TimeCheck,
     Features: Features,
-    USER_COUNT: USER_COUNT,
+    PIN_COUNT: PIN_COUNT,
   };
 })();

@@ -1,12 +1,12 @@
 'use strict';
 
-window.card = (function () {
+(function () {
   var Nodes = window.const.Nodes;
   var Types = window.const.Types;
   var KeyCode = window.const.KeyCode;
 
   // создание шаблона карточки
-  var createCardTemplate = function (user) {
+  var createTemplate = function (user) {
     var card = Nodes.CARD_TEMPLATE.cloneNode(true);
 
     var fillOfferCard = function (element, hasContent, content) {
@@ -99,8 +99,8 @@ window.card = (function () {
     }
   };
 
-  return {
-    createCardTemplate: createCardTemplate,
+  window.card = {
+    createTemplate: createTemplate,
     openPopup: openPopup,
   };
 })();

@@ -1,6 +1,6 @@
 'use strict';
 
-window.form = (function () {
+(function () {
   var Nodes = window.const.Nodes;
   var Offset = window.const.Offset;
   var MinPriceForNight = window.const.MinPriceForNight;
@@ -102,7 +102,7 @@ window.form = (function () {
     window.utils.activationElements(fieldForm, stat);
   };
 
-  return {
+  window.form = {
     setAddressPin: setAddressPin,
     changeMinPrice: changeMinPrice,
     checkCapacityHandler: checkCapacityHandler,
