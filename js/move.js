@@ -1,9 +1,9 @@
 'use strict';
 
-window.move = (function () {
+(function () {
   var Nodes = window.const.Nodes;
 
-  var pinMoveHandler = function (evt) {
+  window.move = function (evt) {
     evt.preventDefault();
 
     var pin = Nodes.MAP_PIN_MAIN;
@@ -61,9 +61,4 @@ window.move = (function () {
     pin.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
   };
-
-  return {
-    pinMoveHandler: pinMoveHandler,
-  };
-
 })();

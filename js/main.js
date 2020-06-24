@@ -3,7 +3,7 @@
 (function () {
   var Nodes = window.const.Nodes;
 
-  Nodes.MAP_PIN_MAIN.addEventListener('mousedown', window.move.pinMoveHandler);
+  Nodes.MAP_PIN_MAIN.addEventListener('mousedown', window.move);
   Nodes.MAP_PIN_MAIN.addEventListener('keydown', window.map.clickMainPinHandler);
 
   Nodes.FORM.addEventListener('change', window.form.changeFormHandler);

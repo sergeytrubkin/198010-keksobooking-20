@@ -1,6 +1,6 @@
 'use strict';
 
-window.data = (function () {
+(function () {
   var Nodes = window.const.Nodes;
   var PinLocation = window.const.PinLocation;
   var TimeCheck = window.const.TimeCheck;
@@ -17,6 +17,15 @@ window.data = (function () {
     'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
     'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
   ];
+  // var onError = function (message) {
+  //   console.log(message);
+  // };
+
+  // var onSuccess = function (data) {
+  //   console.log(data);
+  // };
+
+  // window.load(onSuccess, onError);
 
   var createImageName = function (number) {
     return 'img/avatars/user' + ('' + (number + 1)).padStart(2, 0) + '.png';
@@ -62,7 +71,7 @@ window.data = (function () {
 
     return users;
   };
-  return {
+  window.data = {
     createUsers: createUsers,
   };
 })();

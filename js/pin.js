@@ -1,11 +1,11 @@
 'use strict';
 
-window.pin = (function () {
+(function () {
   var Nodes = window.const.Nodes;
   var Offset = window.const.Offset;
 
   // создание шаблона метки
-  var createPinTemplate = function (user) {
+  var createTemplate = function (user) {
     var pin = Nodes.MAP_PIN_TEMPLATE.cloneNode(true);
 
     pin.style.left = (user.location.x - Offset.MAP_PIN_X) + 'px';
@@ -18,7 +18,7 @@ window.pin = (function () {
     return pin;
   };
 
-  return {
-    createPinTemplate: createPinTemplate,
+  window.pin = {
+    createTemplate: createTemplate,
   };
 })();
