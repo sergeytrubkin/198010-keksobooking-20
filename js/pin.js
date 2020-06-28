@@ -18,7 +18,14 @@
     return pin;
   };
 
+  // сброс положения главной метки
+  var resetPosition = function () {
+    Nodes.MAP_PIN_MAIN.style.left = window.const.PinLocation.MAIN_LEFT + 'px';
+    Nodes.MAP_PIN_MAIN.style.top = window.const.PinLocation.MAIN_TOP + 'px';
+  };
+
   window.pin = {
     createTemplate: createTemplate,
+    resetPosition: resetPosition,
   };
 })();

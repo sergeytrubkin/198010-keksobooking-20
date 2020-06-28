@@ -33,20 +33,18 @@
     return fragment;
   };
 
+  var renderTemplate = function (element, template) {
+    var newTemplate = template.cloneNode(true);
+    element.appendChild(newTemplate);
+  };
+
   // активация/деактивация DOM-элементов
   var activationElements = function (elements, stat) {
-    switch (stat) {
-      case true:
-        Array.from(elements).forEach(function (element) {
-          element.disabled = false;
-        });
-        break;
-      case false:
-        Array.from(elements).forEach(function (element) {
-          element.disabled = true;
-        });
-        break;
-    }
+    var statDisabled = stat ? false : true;
+
+    Array.from(elements).forEach(function (element) {
+      element.disabled = statDisabled;
+    });
   };
 
   var coordsBetween = function (coord, min, max) {
@@ -69,5 +67,6 @@
     createElements: createElements,
     activationElements: activationElements,
     coordsBetween: coordsBetween,
+    renderTemplate: renderTemplate,
   };
 })();
