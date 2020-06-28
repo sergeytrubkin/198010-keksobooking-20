@@ -11,16 +11,18 @@
 
     if (!(pinElements.length > 1)) {
 
-      window.load(function (users) {
-        var pins = window.utils.createElements(users, window.pin.createTemplate);
-        var cards = window.utils.createElements(users, window.card.createTemplate);
+      window.backend.load(function (users) {
+        var activeUsers = users.slice(window.const.USER_COUNT);
 
-        for (var i = 0; i < users.length; i++) {
+        var pins = window.utils.createElements(activeUsers, window.pin.createTemplate);
+        var cards = window.utils.createElements(activeUsers, window.card.createTemplate);
+
+        for (var i = 0; i < activeUsers.length; i++) {
           window.card.openPopup(pins.children[i], cards.children[i], i);
         }
 
         Nodes.MAP_PINS_BLOCK.appendChild(pins);
-
+        window.form.activationForm(Nodes.MAP_FILTERS, true);
       }, function () {});
 
     } else {
@@ -38,6 +40,8 @@
       return; // выход из функции если карта уже активирована
     } else {
       Nodes.MAP.classList.add(fadedClass);
+      Nodes.MAP_PIN_MAIN.addEventListener('keydown', window.map.clickMainPinHandler);
+      return;
     }
 
     Nodes.MAP_PIN_MAIN.removeEventListener('keydown', window.map.clickMainPinHandler);
@@ -48,7 +52,7 @@
       window.form.setAddressPin('move');
       window.map.renderPins();
       window.map.activationMap(true);
-      window.form.activationForm(true);
+      window.form.activationForm(Nodes.const.FORM, true);
     }
   };
 

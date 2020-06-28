@@ -50,13 +50,13 @@
 
       window.map.renderPins();
       window.form.setAddressPin('move');
-      window.form.activationForm(true);
 
       pin.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
     };
 
     window.map.activationMap(true);
+    window.form.activationForm(Nodes.FORM, true);
 
     pin.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);

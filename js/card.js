@@ -71,11 +71,12 @@
       var cardPopup = document.querySelector('.map__card');
 
       if (cardPopup && cardPopup !== card) {
-        cardPopup.remove();
+        closePopup();
       } else if (cardPopup === card) {
         return;
       }
 
+      pin.classList.add('map__pin--active');
       Nodes.MAP_PINS_BLOCK.insertAdjacentElement('afterend', card);
       var popupCloseButton = card.querySelector('.popup__close');
 
@@ -86,8 +87,12 @@
 
   // закрытия карточки
   var closePopup = function () {
+    var pins = document.querySelectorAll('.map__pin');
     var cardPopup = document.querySelector('.map__card');
 
+    Array.from(pins).map(function (pin) {
+      return pin.classList.remove('map__pin--active');
+    });
     cardPopup.remove();
     document.removeEventListener('keydown', popupEscPressHandler);
   };
