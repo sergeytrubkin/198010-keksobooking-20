@@ -2,11 +2,14 @@
 
 (function () {
   var Nodes = {
+    MAIN: document.querySelector('main'),
     MAP: document.querySelector('.map'),
     MAP_PINS_BLOCK: document.querySelector('.map__pins'),
     MAP_FILTERS: document.querySelector('.map__filters'),
     MAP_PIN_MAIN: document.querySelector('.map__pin--main'),
     FORM: document.querySelector('.ad-form'),
+    FORM_BUTTON_SUBMIT: document.querySelector('.ad-form__submit'),
+    FORM_BUTTON_RESET: document.querySelector('.ad-form__reset'),
     FIELD_ADDRESS: document.querySelector('#address'),
     FIELD_TYPE: document.querySelector('#type'),
     FIELD_PRICE: document.querySelector('#price'),
@@ -20,7 +23,14 @@
     CARD_TEMPLATE: document.querySelector('#card')
       .content
       .querySelector('.map__card'),
+    SUCCESS_TEMPLATE: document.querySelector('#success')
+      .content
+      .querySelector('.success'),
+    ERROR_TEMPLATE: document.querySelector('#error')
+      .content
+      .querySelector('.error'),
   };
+
   var KeyCode = {
     ENTER: 13,
     ESC: 27,
@@ -35,6 +45,8 @@
     MIN_X: 0,
     MIN_Y: 130,
     MAX_Y: 630,
+    MAIN_LEFT: Nodes.MAP_PIN_MAIN.offsetLeft,
+    MAIN_TOP: Nodes.MAP_PIN_MAIN.offsetTop,
   };
   var Capacity = {
     MIN: 0,
@@ -66,7 +78,7 @@
     'elevator',
     'conditioner',
   ];
-  var PIN_COUNT = 8;
+  var USER_COUNT = 5;
 
   window.const = {
     Nodes: Nodes,
@@ -79,6 +91,6 @@
     MinPriceForNight: MinPriceForNight,
     TimeCheck: TimeCheck,
     Features: Features,
-    PIN_COUNT: PIN_COUNT,
+    USER_COUNT: USER_COUNT,
   };
 })();
