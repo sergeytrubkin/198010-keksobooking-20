@@ -24,8 +24,24 @@
     Nodes.MAP_PIN_MAIN.style.top = window.const.PinLocation.MAIN_TOP + 'px';
   };
 
+  var remove = function () {
+    var pins = document.querySelectorAll('.map__pin');
+    var card = document.querySelector('.map__card');
+
+    Array.from(pins).forEach(function (pin) {
+      if (!pin.classList.contains('map__pin--main')) {
+        pin.remove();
+      }
+    });
+
+    if (card) {
+      card.remove();
+    }
+  };
+
   window.pin = {
     createTemplate: createTemplate,
     resetPosition: resetPosition,
+    remove: remove,
   };
 })();

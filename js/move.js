@@ -48,7 +48,7 @@
       upEvt.preventDefault();
       pin.style.zIndex = pinZIndex;
 
-      window.map.renderPins();
+      window.map.updatePins();
       window.form.setAddressPin('move');
 
       pin.removeEventListener('mousemove', onMouseMove);
