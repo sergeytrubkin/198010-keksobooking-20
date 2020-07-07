@@ -42,13 +42,32 @@
     var cardTime = card.querySelector('.popup__text--time');
     fillOfferCard(cardTime, 'checkin' && 'checkout', ('Заезд после ' + user.offer.checkin + ', выезд до ' + user.offer.checkout));
 
-    var cardFeaturesList = card.querySelector('.popup__features');
-    fillOfferCard(cardFeaturesList, 'features', user.offer.features);
-
     var cardDescription = card.querySelector('.popup__description');
     fillOfferCard(cardDescription, 'description', user.offer.description);
 
-    var cardPhoto = card.querySelector('.popup__photos');
+    renderFeature(card, user);
+    renderPhoto(card, user);
+
+    return card;
+  };
+
+  var renderFeature = function (template, user) {
+    var featureList = template.querySelector('.popup__features');
+    featureList.textContent = '';
+
+    for (var i = 0; i < user.offer.features.length; i++) {
+      if (user.offer.features.length === 0) {
+        featureList.remove();
+      } else {
+        var featureItem = document.createElement('li');
+        featureItem.classList.add('popup__feature', 'popup__feature--' + user.offer.features[i]);
+        featureList.appendChild(featureItem);
+      }
+    }
+  };
+
+  var renderPhoto = function (template, user) {
+    var cardPhoto = template.querySelector('.popup__photos');
     if (user.offer.hasOwnProperty('photos')) {
       var cardPhotoImg = cardPhoto.querySelector('.popup__photo');
       cardPhotoImg.remove();
@@ -61,8 +80,6 @@
     } else {
       cardPhoto.remove();
     }
-
-    return card;
   };
 
   // функция открытия карточки через слушателя на метке
