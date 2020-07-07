@@ -39,8 +39,9 @@
     return filteredUsers;
   };
 
-  var updateFilteredPins = function (usersData) {
+  var updateFilteredPins = function () {
     window.pin.remove();
+    var usersData = window.usersData;
     var features = Field.FEATURE.querySelectorAll('input:checked');
     var filteredUsers = [];
     var allFieldValueAny = true;
@@ -95,9 +96,7 @@
     window.pin.render(uniqueUsers);
   };
 
-  var filterChangeHandler = function () {
-    updateFilteredPins(window.usersData);
-  };
+  var filterChangeHandler = window.debounce(updateFilteredPins);
 
   window.filter = {
     filterChangeHandler: filterChangeHandler,
