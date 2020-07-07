@@ -109,12 +109,14 @@
   var resetPage = function () {
     window.pin.remove();
     activationForm(Nodes.FORM, false);
+    Nodes.FORM.reset();
     activationForm(Nodes.MAP_FILTERS, false);
+    Nodes.MAP_FILTERS.reset();
     window.pin.resetPosition();
     window.map.activationMap(false);
-    Nodes.FORM.reset();
     setAddressPin('preload');
     changeMinPrice();
+    window.usersData = [];
   };
 
   var getHandlerForPopup = function (className) {
