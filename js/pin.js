@@ -53,11 +53,19 @@
     }
   };
 
-  // var onError = function (message) {
-  //   console.log(message);
-  // };
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
 
-  var onSuccess = function (users) {
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  var successHandler = function (users) {
     window.usersData = users;
     render(window.usersData);
   };
@@ -65,7 +73,7 @@
   var addOnMap = function () {
 
     if (!window.usersData.length) {
-      window.backend.load(onSuccess, function () {});
+      window.backend.load(successHandler, errorHandler);
     }
   };
 

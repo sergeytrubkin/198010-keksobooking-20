@@ -168,13 +168,17 @@
     popupClose(evt, ClassName.ERROR);
   };
 
+  var successHandler = function () {
+    popupOpen(Nodes.SUCCESS_TEMPLATE);
+    resetPage();
+  };
+
+  var errorHandler = function () {
+    popupOpen(Nodes.ERROR_TEMPLATE);
+  };
+
   var submitHandler = function (evt) {
-    window.backend.upload(function () {
-      popupOpen(Nodes.SUCCESS_TEMPLATE);
-      resetPage();
-    }, function () {
-      popupOpen(Nodes.ERROR_TEMPLATE);
-    }, new FormData(Nodes.FORM));
+    window.backend.upload(successHandler, errorHandler, new FormData(Nodes.FORM));
 
     evt.preventDefault();
   };
