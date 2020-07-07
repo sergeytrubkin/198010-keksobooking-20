@@ -6,6 +6,8 @@
   Nodes.MAP_PIN_MAIN.addEventListener('mousedown', window.move);
   Nodes.MAP_PIN_MAIN.addEventListener('keydown', window.map.clickMainPinHandler);
 
+  Nodes.MAP_FILTERS.addEventListener('change', window.filter.filterChangeHandler);
+
   Nodes.FORM.addEventListener('change', window.form.changeFormHandler);
   Nodes.FORM.addEventListener('submit', window.form.submitHandler);
   Nodes.FORM_BUTTON_RESET.addEventListener('click', window.form.resetPage);

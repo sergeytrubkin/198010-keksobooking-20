@@ -3,7 +3,7 @@
 (function () {
   var Url = {
     LOAD: 'https://javascript.pages.academy/keksobooking/data',
-    UPLOAD: 'https://javascript.pages.academy/keksobooking1',
+    UPLOAD: 'https://javascript.pages.academy/keksobooking',
   };
   var StatusCode = {
     OK: 200,
