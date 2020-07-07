@@ -90,10 +90,13 @@
     var pins = document.querySelectorAll('.map__pin');
     var cardPopup = document.querySelector('.map__card');
 
-    Array.from(pins).map(function (pin) {
-      return pin.classList.remove('map__pin--active');
+    Array.from(pins).forEach(function (pin) {
+      pin.classList.remove('map__pin--active');
     });
-    cardPopup.remove();
+
+    if (cardPopup) {
+      cardPopup.remove();
+    }
     document.removeEventListener('keydown', popupEscPressHandler);
   };
 
@@ -107,5 +110,6 @@
   window.card = {
     createTemplate: createTemplate,
     openPopup: openPopup,
+    closePopup: closePopup,
   };
 })();
