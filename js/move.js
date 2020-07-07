@@ -6,6 +6,7 @@
   window.move = function (evt) {
     evt.preventDefault();
 
+    var card = document.querySelector('.map__card');
     var pin = Nodes.MAP_PIN_MAIN;
     var pinZIndex = pin.style.zIndex;
 
@@ -18,6 +19,10 @@
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
+      if (card) {
+        card.style.opacity = '0.3';
+        card.style.transition = '1s';
+      }
 
       var map = Nodes.MAP;
       var coordXMin = Math.floor(-pin.offsetWidth / 2);
@@ -47,8 +52,11 @@
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
       pin.style.zIndex = pinZIndex;
+      if (card) {
+        card.style.opacity = 1;
+      }
 
-      window.map.updatePins();
+      window.pin.addOnMap();
       window.form.setAddressPin('move');
 
       pin.removeEventListener('mousemove', onMouseMove);

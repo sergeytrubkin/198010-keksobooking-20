@@ -30,7 +30,6 @@
       .content
       .querySelector('.error'),
   };
-
   var KeyCode = {
     ENTER: 13,
     ESC: 27,
@@ -69,6 +68,7 @@
     'house': 5000,
     'palace': 10000,
   };
+  var MAX_PRICE_FOR_NIGHT = '1000000';
   var TimeCheck = ['12:00', '13:00', '14:00'];
   var Features = [
     'wifi',
@@ -89,6 +89,7 @@
     Rooms: Rooms,
     Types: Types,
     MinPriceForNight: MinPriceForNight,
+    MAX_PRICE_FOR_NIGHT: MAX_PRICE_FOR_NIGHT,
     TimeCheck: TimeCheck,
     Features: Features,
     USER_COUNT: USER_COUNT,

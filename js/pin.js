@@ -24,6 +24,20 @@
     Nodes.MAP_PIN_MAIN.style.top = window.const.PinLocation.MAIN_TOP + 'px';
   };
 
+  // отрисовка меток на карте
+  var render = function (users) {
+    var activeUsers = users.slice(0, Math.min(users.length, window.const.USER_COUNT));
+    var pins = window.utils.createElements(activeUsers, window.pin.createTemplate);
+    var cards = window.utils.createElements(activeUsers, window.card.createTemplate);
+
+    for (var i = 0; i < activeUsers.length; i++) {
+      window.card.openPopup(pins.children[i], cards.children[i], i);
+    }
+
+    Nodes.MAP_PINS_BLOCK.appendChild(pins);
+    window.form.activationForm(Nodes.MAP_FILTERS, true);
+  };
+
   var remove = function () {
     var pins = document.querySelectorAll('.map__pin');
     var card = document.querySelector('.map__card');
@@ -39,9 +53,35 @@
     }
   };
 
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  var successHandler = function (users) {
+    window.usersData = users;
+    render(window.usersData);
+  };
+
+  var addOnMap = function () {
+
+    if (!window.usersData.length) {
+      window.backend.load(successHandler, errorHandler);
+    }
+  };
+
   window.pin = {
     createTemplate: createTemplate,
     resetPosition: resetPosition,
+    render: render,
     remove: remove,
+    addOnMap: addOnMap,
   };
 })();

@@ -17,15 +17,7 @@
     'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
     'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
   ];
-  // var onError = function (message) {
-  //   console.log(message);
-  // };
-
-  // var onSuccess = function (data) {
-  //   console.log(data);
-  // };
-
-  // window.load(onSuccess, onError);
+  window.usersData = [];
 
   var createImageName = function (number) {
     return 'img/avatars/user' + ('' + (number + 1)).padStart(2, 0) + '.png';
@@ -71,6 +63,7 @@
 
     return users;
   };
+
   window.data = {
     createUsers: createUsers,
   };

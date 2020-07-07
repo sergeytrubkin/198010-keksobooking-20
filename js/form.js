@@ -109,12 +109,14 @@
   var resetPage = function () {
     window.pin.remove();
     activationForm(Nodes.FORM, false);
+    Nodes.FORM.reset();
     activationForm(Nodes.MAP_FILTERS, false);
+    Nodes.MAP_FILTERS.reset();
     window.pin.resetPosition();
     window.map.activationMap(false);
-    Nodes.FORM.reset();
     setAddressPin('preload');
     changeMinPrice();
+    window.usersData = [];
   };
 
   var getHandlerForPopup = function (className) {
@@ -166,13 +168,17 @@
     popupClose(evt, ClassName.ERROR);
   };
 
+  var successHandler = function () {
+    popupOpen(Nodes.SUCCESS_TEMPLATE);
+    resetPage();
+  };
+
+  var errorHandler = function () {
+    popupOpen(Nodes.ERROR_TEMPLATE);
+  };
+
   var submitHandler = function (evt) {
-    window.backend.upload(function () {
-      popupOpen(Nodes.SUCCESS_TEMPLATE);
-      resetPage();
-    }, function () {
-      popupOpen(Nodes.ERROR_TEMPLATE);
-    }, new FormData(Nodes.FORM));
+    window.backend.upload(successHandler, errorHandler, new FormData(Nodes.FORM));
 
     evt.preventDefault();
   };
