@@ -9,7 +9,11 @@
     GUEST: document.querySelector('#housing-guests'),
     FEATURE: document.querySelector('#housing-features'),
   };
-
+  var PropertyName = {
+    TYPE: 'type',
+    ROOMS: 'rooms',
+    GUESTS: 'guests',
+  };
   var FieldPriceValue = {
     'low': {
       min: '0',
@@ -49,7 +53,7 @@
     // фильтрация по типу
     if (Field.TYPE.value !== FIELD_VALUE_ANY) {
       allFieldValueAny = false;
-      filteredUsers = filteredUsers.concat(checkFilterItem(usersData, 'type', Field.TYPE));
+      filteredUsers = filteredUsers.concat(checkFilterItem(usersData, PropertyName.TYPE, Field.TYPE));
     }
 
     // фильтрация по стоимости
@@ -66,13 +70,13 @@
     // фильтрация по количеству комнат
     if (Field.ROOM.value !== FIELD_VALUE_ANY) {
       allFieldValueAny = false;
-      filteredUsers = filteredUsers.concat(checkFilterItem(usersData, 'rooms', Field.ROOM));
+      filteredUsers = filteredUsers.concat(checkFilterItem(usersData, PropertyName.ROOMS, Field.ROOM));
     }
 
     // фильтрация по количеству гостей
     if (Field.GUEST.value !== FIELD_VALUE_ANY) {
       allFieldValueAny = false;
-      filteredUsers = filteredUsers.concat(checkFilterItem(usersData, 'guests', Field.GUEST));
+      filteredUsers = filteredUsers.concat(checkFilterItem(usersData, PropertyName.GUESTS, Field.GUEST));
     }
 
     // фильтрация по выбору удобств

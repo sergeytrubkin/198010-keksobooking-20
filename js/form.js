@@ -19,11 +19,13 @@
     var pinOffsetY = parseInt(pin.style.top, 10);
     var pinWidth = pin.offsetWidth;
     var pinHeight = pin.offsetHeight;
+    var pinLocationX;
+    var pinLocationY;
 
     switch (stat) {
       case 'preload':
-        var pinLocationX = pinOffsetX + pinWidth / 2;
-        var pinLocationY = pinOffsetY + pinHeight / 2;
+        pinLocationX = pinOffsetX + pinWidth / 2;
+        pinLocationY = pinOffsetY + pinHeight / 2;
         break;
       case 'move':
         pinLocationX = pinOffsetX + pinWidth / 2;
@@ -38,8 +40,7 @@
 
   // функция подстановки адреса метки в поле формы *'preload'/'move'*
   var setAddressPin = function (stat) {
-    var address = getLocationPin(stat);
-    Nodes.FIELD_ADDRESS.value = address;
+    Nodes.FIELD_ADDRESS.value = getLocationPin(stat);
   };
 
   // определение минимальной стоимости в зависимости от типа жилья
@@ -75,8 +76,6 @@
       message = 'такое количество комнат наверное не для гостей';
     } else if (capacityNumber === Capacity.MIN && roomNumber < Rooms.NOT_GUEST) {
       message = 'Для данного количества комнат необходимо выбрать количество мест';
-    } else {
-      message = '';
     }
 
     Nodes.FIELD_CAPACITY.setCustomValidity(message);
