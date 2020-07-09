@@ -40,10 +40,8 @@
 
   // активация/деактивация DOM-элементов
   var activationElements = function (elements, stat) {
-    var statDisabled = stat ? false : true;
-
     Array.from(elements).forEach(function (element) {
-      element.disabled = statDisabled;
+      element.disabled = !stat;
     });
   };
 

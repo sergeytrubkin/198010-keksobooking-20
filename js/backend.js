@@ -12,7 +12,7 @@
     LOAD: 'GET',
     UPLOAD: 'POST',
   };
-  var TIME_IN_MS = '1000';
+  var TIME_IN_MS = 1000;
 
   var connectToServer = function (onSuccess, onError, method, url, data) {
     var xhr = new XMLHttpRequest();

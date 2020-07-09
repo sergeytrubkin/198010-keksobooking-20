@@ -9,8 +9,12 @@
     GUEST: document.querySelector('#housing-guests'),
     FEATURE: document.querySelector('#housing-features'),
   };
-
-  var fieldPriceValue = {
+  var PropertyName = {
+    TYPE: 'type',
+    ROOMS: 'rooms',
+    GUESTS: 'guests',
+  };
+  var FieldPriceValue = {
     'low': {
       min: '0',
       max: '10000',
@@ -49,13 +53,13 @@
     // фильтрация по типу
     if (Field.TYPE.value !== FIELD_VALUE_ANY) {
       allFieldValueAny = false;
-      filteredUsers = filteredUsers.concat(checkFilterItem(usersData, 'type', Field.TYPE));
+      filteredUsers = filteredUsers.concat(checkFilterItem(usersData, PropertyName.TYPE, Field.TYPE));
     }
 
     // фильтрация по стоимости
     if (Field.PRICE.value !== FIELD_VALUE_ANY) {
       allFieldValueAny = false;
-      var price = fieldPriceValue[Field.PRICE.value];
+      var price = FieldPriceValue[Field.PRICE.value];
 
       var filteredUsersPrice = usersData.filter(function (it) {
         return it.offer.price >= price.min && it.offer.price <= price.max;
@@ -66,13 +70,13 @@
     // фильтрация по количеству комнат
     if (Field.ROOM.value !== FIELD_VALUE_ANY) {
       allFieldValueAny = false;
-      filteredUsers = filteredUsers.concat(checkFilterItem(usersData, 'rooms', Field.ROOM));
+      filteredUsers = filteredUsers.concat(checkFilterItem(usersData, PropertyName.ROOMS, Field.ROOM));
     }
 
     // фильтрация по количеству гостей
     if (Field.GUEST.value !== FIELD_VALUE_ANY) {
       allFieldValueAny = false;
-      filteredUsers = filteredUsers.concat(checkFilterItem(usersData, 'guests', Field.GUEST));
+      filteredUsers = filteredUsers.concat(checkFilterItem(usersData, PropertyName.GUESTS, Field.GUEST));
     }
 
     // фильтрация по выбору удобств
