@@ -10,7 +10,7 @@
     FEATURE: document.querySelector('#housing-features'),
   };
 
-  var fieldPriceValue = {
+  var FieldPriceValue = {
     'low': {
       min: '0',
       max: '10000',
@@ -55,7 +55,7 @@
     // фильтрация по стоимости
     if (Field.PRICE.value !== FIELD_VALUE_ANY) {
       allFieldValueAny = false;
-      var price = fieldPriceValue[Field.PRICE.value];
+      var price = FieldPriceValue[Field.PRICE.value];
 
       var filteredUsersPrice = usersData.filter(function (it) {
         return it.offer.price >= price.min && it.offer.price <= price.max;

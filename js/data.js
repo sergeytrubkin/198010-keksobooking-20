@@ -3,7 +3,7 @@
 (function () {
   var Nodes = window.const.Nodes;
   var PinLocation = window.const.PinLocation;
-  var TimeCheck = window.const.TimeCheck;
+  var AvailableTime = window.const.AvailableTime;
   var Features = window.const.Features;
   var Types = window.const.Types;
   var Rooms = window.const.Rooms;
@@ -43,8 +43,8 @@
         type: window.utils.getRandomElement(Object.keys(Types)),
         rooms: window.utils.getRandomElement(Object.values(Rooms)),
         guests: window.utils.getRandomBetween(Capacity.MIN, Capacity.MAX),
-        checkin: window.utils.getRandomElement(TimeCheck),
-        checkout: window.utils.getRandomElement(TimeCheck),
+        checkin: window.utils.getRandomElement(AvailableTime),
+        checkout: window.utils.getRandomElement(AvailableTime),
         features: window.utils.getRandomElements(Features),
         description: 'строка с описанием',
         photos: window.utils.getRandomElements(Photos),
