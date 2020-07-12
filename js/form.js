@@ -113,6 +113,7 @@
     Nodes.MAP_FILTERS.reset();
     window.pin.resetPosition();
     window.map.activationMap(false);
+    window.previewPhoto.remove();
     setAddressPin('preload');
     changeMinPrice();
     window.usersData = [];

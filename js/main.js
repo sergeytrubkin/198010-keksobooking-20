@@ -14,6 +14,11 @@
   Nodes.FIELD_CAPACITY.addEventListener('input', window.form.checkCapacityHandler);
   Nodes.FIELD_ROOM.addEventListener('input', window.form.checkCapacityHandler);
 
+  // предпросмотр фотографий
+  Nodes.INPUT_AVATAR.addEventListener('change', window.previewPhoto.avatarPreviewChangeHandler);
+  Nodes.INPUT_IMAGE.addEventListener('change', window.previewPhoto.photoPreviewChangeHandler);
+
+
   window.form.changeMinPrice(Nodes.FIELD_TYPE.value);
   window.form.setAddressPin('preload');
   window.form.activationForm(Nodes.FORM, false);
